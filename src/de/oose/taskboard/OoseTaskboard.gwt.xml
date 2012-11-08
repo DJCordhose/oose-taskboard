@@ -18,25 +18,14 @@
 
 
     <!-- Other module inherits -->
-	<inherits name='com.gwtplatform.mvp.Mvp'/>
-	<inherits name='com.gwtplatform.dispatch.Dispatch'/>
+	<!-- <inherits name='com.gwtplatform.mvp.Mvp'/> -->
+	<!-- <inherits name='com.gwtplatform.dispatch.Dispatch'/> -->
 
     <!-- Specify the app entry point class. -->
-
     <entry-point class="de.oose.taskboard.client.OoseTaskboard" />
 
     <!-- Specify the paths for translatable code -->
-
     <source path="client" />
-
     <source path="shared" />
-
-    <define-configuration-property
-        name="gin.ginjector"
-        is-multi-valued="false" />
-
-    <set-configuration-property
-        name="gin.ginjector"
-        value="de.oose.taskboard.client.gin.ClientGinjector" />
 
 </module>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ooseTaskboard</name>
+	<name>ooseTaskboard_TN</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -30,6 +30,5 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
-		<nature>org.apache.ivyde.eclipse.ivynature</nature>
 	</natures>
 </projectDescription>

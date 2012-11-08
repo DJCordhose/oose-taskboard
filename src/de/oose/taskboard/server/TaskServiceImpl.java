@@ -1,84 +1,110 @@
 package de.oose.taskboard.server;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import org.dozer.Mapper;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import com.google.inject.persist.Transactional;
+import de.oose.taskboard.shared.Task;
+import de.oose.taskboard.shared.TaskService;
 
-import de.oose.taskboard.client.service.TaskService;
-import de.oose.taskboard.server.entity.PersistenceService;
-import de.oose.taskboard.server.entity.Task;
-import de.oose.taskboard.shared.bo.TaskBO;
-import de.oose.taskboard.shared.bo.UserBO;
-import de.oose.taskboard.shared.enums.TaskVisibility;
+@SuppressWarnings("serial")
+public class TaskServiceImpl extends RemoteServiceServlet implements
+		TaskService {
 
+	abstract class Template<T> {
 
-public class TaskServiceImpl implements TaskService {
+		protected EntityManager em;
 
-	@Inject
-	private Mapper mapper;
-
-	@Inject
-	private EntityManager em;
-	
-	@Inject
-	private PersistenceService ps;
-
-
-	public TaskServiceImpl() {
-
-	}
-
-	@Override
-	@Transactional
-	public TaskBO addTask(UserBO userBO, TaskBO taskBO) {
-		taskBO.validate();
-		Task task = ps.createTask(userBO.getId(), taskBO.getTitle(), taskBO.getDescription(), taskBO.getStatus(), taskBO.getVisibility());
-		taskBO = mapper.map(task, TaskBO.class);
-		return taskBO;
-	}
-
-	@Override
-	public TaskBO updateTask(TaskBO taskBO) {
-		taskBO.validate();
-		Task task = ps.updateTask(taskBO.getId(), taskBO.getTitle(), taskBO.getDescription(), taskBO.getStatus(), taskBO.getVisibility());
-		taskBO = mapper.map(task, TaskBO.class);
-		return taskBO;
-	}
-
-	@Override
-	public void deleteTask(TaskBO taskBO) {
-		ps.deleteTask(taskBO.getId());
-	}
-	
-	public List<TaskBO> getTasks(UserBO user, String status, int start, int count) {
-		List<Task> tasks = ps.getTasks(status, start, count);
-		List<Task> result = new ArrayList<Task>();
-		for (Task task : tasks) {
-			if (task.getUser().getId() == user.getId() || task.getVisibility().equals(TaskVisibility.PUBLIC)) {
-				result.add(task);
+		public T execute() {
+			EntityManagerFactory emf = Persistence
+					.createEntityManagerFactory("taskboardHsql");
+			em = emf.createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			try {
+				try {
+					T call = mach();
+					tx.commit();
+					return call;
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			} catch (Throwable t) {
+				tx.rollback();
+				throw new RuntimeException(t);
+			} finally {
+				em.close();
+				emf.close();
 			}
 		}
-		return map(result);
+
+		protected abstract T mach();
 	}
-	
-	public Integer getTaskCount(UserBO user, String status) {
-		return ps.getTaskCount(user.getId(), status);
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.oose.taskboard.server.TaskService#createTask()
+	 */
+	@Override
+	public Task createTask() {
+		return new Template<Task>() {
+			@Override
+			protected Task mach() {
+				Task task = new Task();
+				em.persist(task);
+				return task;
+			}
+
+		}.execute();
 	}
-	
-	private List<TaskBO> map(List<Task> tasks) {
-		if (tasks == null) return null;
-		List<TaskBO> taskBOs = new ArrayList<TaskBO>(tasks.size());
-		for (Task t : tasks) {
-			TaskBO bo = mapper.map(t, TaskBO.class);
-			taskBOs.add(bo);
-		}
-		return taskBOs;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.oose.taskboard.server.TaskService#saveTask(de.oose.taskboard.shared
+	 * .Task)
+	 */
+	@Override
+	public Task saveTask(final Task task) {
+		return new Template<Task>() {
+			@Override
+			protected Task mach() {
+				if (task.getId() == 0) {
+					em.persist(task);
+					return task;
+				} else {
+					return em.merge(task);
+				}
+			}
+
+		}.execute();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.oose.taskboard.server.TaskService#getAll()
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Task> getAll() {
+		return new Template<List<Task>>() {
+			@Override
+			protected List<Task> mach() {
+				Query query = em.createNamedQuery(Task.QUERY_ALL);
+				return query.getResultList();
+			}
+
+		}.execute();
+
+	}
 }

@@ -6,7 +6,7 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
- 
+ <!-- 
   <filter>
     <filter-name>guiceFilter</filter-name>
     <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
@@ -32,6 +32,18 @@
   <listener>
     <listener-class>de.oose.taskboard.server.GuiceContextListener</listener-class>
   </listener>
+  
+  -->
+  
+    <servlet>
+    <servlet-name>taskServlet</servlet-name>
+    <servlet-class>de.oose.taskboard.server.TaskServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>taskServlet</servlet-name>
+    <url-pattern>/oosetaskboard/task</url-pattern>
+  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

@@ -34,10 +34,23 @@
   </listener>
   
   -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:application-context.xml
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
   
     <servlet>
     <servlet-name>taskServlet</servlet-name>
-    <servlet-class>de.oose.taskboard.server.TaskServiceImpl</servlet-class>
+    <!-- 
+    <servlet-class>de.oose.taskboard.server.TaskEndpointImpl</servlet-class>
+     -->
+    <servlet-class>de.oose.taskboard.server.TaskEndpointWithSpringServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>

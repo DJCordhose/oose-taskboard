@@ -35,6 +35,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
@@ -96,8 +97,7 @@ public class TaskboardView extends Composite {
 
 	private final CwConstants constants = GWT.create(CwConstants.class);
 
-	private ListDataProvider<Task> dataProvider = new ListDataProvider<Task>();
-
+	private AbstractDataProvider<Task> dataProvider;
 	private TaskboardPresenter taskboardPresenter;
 
 	/**
@@ -108,12 +108,13 @@ public class TaskboardView extends Composite {
 	 * @param constants
 	 *            the constants
 	 */
-	public TaskboardView(TaskboardPresenter taskboardPresenter) {
+	public TaskboardView(TaskboardPresenter taskboardPresenter,AbstractDataProvider<Task> dataProvider, ListHandler<Task> columnSortHandler) {
 		this.taskboardPresenter = taskboardPresenter;
-		initWidget(createWidget());
+		this.dataProvider = dataProvider;
+		initWidget(createWidget(columnSortHandler));
 	}
 
-	Widget createWidget() {
+	Widget createWidget(ListHandler<Task> columnSortHandler) {
 		// Create a CellTable.
 
 		// Set a key provider that provides a unique key for each contact. If
@@ -127,9 +128,6 @@ public class TaskboardView extends Composite {
 			}
 		};
 		cellTable = new CellTable<Task>(keyProvider);
-		ListHandler<Task> columnSortHandler = new ListHandler<Task>(
-				dataProvider.getList());
-		cellTable.addColumnSortHandler(columnSortHandler);
 
 		// Create a Pager to control the table.
 		SimplePager.Resources pagerResources = GWT
@@ -137,12 +135,12 @@ public class TaskboardView extends Composite {
 		pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
 				true);
 		pager.setDisplay(cellTable);
-
 		// Add a selection model so we can select cells.
 		final MultiSelectionModel<Task> selectionModel = new MultiSelectionModel<Task>(
 				keyProvider);
 		cellTable.setSelectionModel(selectionModel);
 
+		cellTable.addColumnSortHandler(columnSortHandler);
 		// Initialize the columns.
 		initTableColumns(selectionModel, columnSortHandler);
 
@@ -153,14 +151,6 @@ public class TaskboardView extends Composite {
 		Widget widget = uiBinder.createAndBindUi(this);
 
 		return widget;
-	}
-
-	public void addTask(Task task) {
-		dataProvider.getList().add(task);
-	}
-
-	public void setTasks(List<Task> tasks) {
-		dataProvider.setList(tasks);
 	}
 
 	/**
@@ -198,7 +188,6 @@ public class TaskboardView extends Composite {
 				// Called when the user changes the value.
 				object.setDescription(value);
 				taskboardPresenter.saveTask(object);
-				dataProvider.refresh();
 			}
 		});
 		descriptionColumn.setSortable(true);
@@ -233,7 +222,6 @@ public class TaskboardView extends Composite {
 					}
 				}
 				taskboardPresenter.saveTask(object);
-				dataProvider.refresh();
 			}
 		});
 

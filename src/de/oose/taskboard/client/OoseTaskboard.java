@@ -26,6 +26,7 @@ public class OoseTaskboard implements EntryPoint {
 		presenter.setView(view);
 		presenter.createTask();
 		root.add(view);
+		presenter.loadTask(70);
 	}
 
 	private TaskboardView createViewLocalDataProvider(

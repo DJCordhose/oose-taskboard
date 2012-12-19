@@ -2,7 +2,11 @@ package de.oose.taskboard.client;
 
 import java.util.List;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -69,6 +73,37 @@ public class TaskboardPresenter {
 				load();
 			}
 		});
+	}
+
+	public void loadTask(int id) {
+		String url = GWT.getModuleBaseURL() + "taskrs/" + id;
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+
+		try {
+			Request request = builder.sendRequest(null, new RequestCallback() {
+
+				@Override
+				public void onResponseReceived(Request request,
+						Response response) {
+					int statusCode = response.getStatusCode();
+					if (statusCode == 200) {
+						String json = response.getText();
+						TaskJsni task = TaskJsni.createInstance(json);
+						String state = task.getState();
+						System.out.println(state);
+						System.out.println(task);
+					}
+				}
+
+				@Override
+				public void onError(Request request, Throwable exception) {
+					throw new RuntimeException(exception);
+				}
+
+			});
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void load() {

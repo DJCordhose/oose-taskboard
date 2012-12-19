@@ -38,7 +38,7 @@
   
   <servlet-mapping>
     <servlet-name>taskRestEndpoint</servlet-name>
-    <url-pattern>/oosetaskboard/taskrs</url-pattern>
+    <url-pattern>/oosetaskboard/taskrs/*</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

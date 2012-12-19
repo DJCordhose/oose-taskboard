@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	@NamedQuery(name = Task.QUERY_ALL, query="SELECT t FROM Task t")})
 @JsonIgnoreProperties(ignoreUnknown=true, value={"version"})
 public class Task implements Serializable {
-	public enum State {
-		TODO, IN_PROGRESS, DONE;
-	}
-
 	public final static String QUERY_ALL = "Task.all";
 	
 	@Id

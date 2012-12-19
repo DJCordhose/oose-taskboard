@@ -3,6 +3,9 @@ package de.oose.taskboard.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,16 +44,35 @@ public class TaskSpringRestEndpoint extends AbstractSpringServlet {
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doDelete(req, resp);
 	}
 
 	// read
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		List<Task> all = taskService.getAll();
-		passResult(resp, all);
+		List<String> parameters = getParameters(req);
+		if (parameters.size() == 0) {
+			List<Task> all = taskService.getAll();
+			passResult(resp, all);
+		} else {
+			int id = Integer.parseInt(parameters.get(0));
+			Task task = taskService.find(id);
+			passResult(resp, task);
+		}
+	}
+
+	private List<String> getParameters(HttpServletRequest req) {
+		final String pathInfo = req.getPathInfo();
+		if (pathInfo == null || pathInfo.length() == 0) {
+			return Collections.emptyList();
+		}
+		String parameterString = pathInfo;
+		if (parameterString.startsWith("/")) {
+			parameterString = parameterString.substring(1);
+		}
+		String[] split = parameterString.split("/");
+		List<String> parameters = Arrays.asList(split);
+		return parameters;
 	}
 
 	private void passResult(HttpServletResponse resp, Object result) {

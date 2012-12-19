@@ -35,6 +35,10 @@ public class TaskService {
 		}
 	}
 
+	public Task find(int id) {
+		return em.find(Task.class,id);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Task> getAll() {
 		Query query = em.createNamedQuery(Task.QUERY_ALL);

@@ -41,8 +41,8 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
+import de.oose.taskboard.shared.entity.State;
 import de.oose.taskboard.shared.entity.Task;
-import de.oose.taskboard.shared.entity.Task.State;
 
 /**
  * Example file.
@@ -200,7 +200,7 @@ public class TaskboardView extends Composite {
 		});
 
 		List<String> names = new ArrayList<String>();
-		State[] values = Task.State.values();
+		State[] values = State.values();
 		for (State state : values) {
 			names.add(state.name());
 		}
@@ -216,7 +216,7 @@ public class TaskboardView extends Composite {
 		cellTable.addColumn(stateColumn, constants.stateHeader());
 		stateColumn.setFieldUpdater(new FieldUpdater<Task, String>() {
 			public void update(int index, Task object, String value) {
-				for (Task.State state : Task.State.values()) {
+				for (State state : State.values()) {
 					if (state.name().equals(value)) {
 						object.setState(state);
 					}

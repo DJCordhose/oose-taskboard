@@ -41,8 +41,8 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
-import de.oose.taskboard.shared.Task;
-import de.oose.taskboard.shared.Task.State;
+import de.oose.taskboard.shared.entity.Task;
+import de.oose.taskboard.shared.entity.Task.State;
 
 /**
  * Example file.

@@ -10,12 +10,12 @@ import javax.persistence.Query;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.oose.taskboard.shared.Task;
-import de.oose.taskboard.shared.TaskEndpoint;
+import de.oose.taskboard.shared.TaskBoundary;
+import de.oose.taskboard.shared.entity.Task;
 
 @SuppressWarnings("serial")
-public class TaskEndpointImpl extends RemoteServiceServlet implements
-		TaskEndpoint {
+public class TaskBoundaryImpl extends RemoteServiceServlet implements
+		TaskBoundary {
 
 	abstract class Template<T> {
 

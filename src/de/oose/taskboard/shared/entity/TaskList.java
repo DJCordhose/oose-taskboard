@@ -1,4 +1,4 @@
-package de.oose.taskboard.shared;
+package de.oose.taskboard.shared.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;

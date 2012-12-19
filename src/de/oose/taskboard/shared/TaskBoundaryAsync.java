@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.oose.taskboard.shared.entity.Task;
 
-public interface TaskEndpointAsync {
+
+public interface TaskBoundaryAsync {
 
 	void createTask(AsyncCallback<Task> callback);
 

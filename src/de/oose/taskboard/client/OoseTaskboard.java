@@ -14,7 +14,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.Range;
 
-import de.oose.taskboard.shared.Task;
+import de.oose.taskboard.shared.entity.Task;
 
 public class OoseTaskboard implements EntryPoint {
 

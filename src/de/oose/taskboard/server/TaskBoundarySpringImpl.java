@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.oose.taskboard.shared.Task;
-import de.oose.taskboard.shared.TaskEndpoint;
+import de.oose.taskboard.shared.TaskBoundary;
+import de.oose.taskboard.shared.entity.Task;
 
 @SuppressWarnings("serial")
-public class TaskEndpointSpringImpl extends AbstractSpringBoundary
-		implements TaskEndpoint {
+public class TaskBoundarySpringImpl extends AbstractSpringBoundary
+		implements TaskBoundary {
 
 	@Inject
 	TaskService taskService;

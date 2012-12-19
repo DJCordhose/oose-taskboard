@@ -6,13 +6,13 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.ListDataProvider;
 
-import de.oose.taskboard.shared.Task;
-import de.oose.taskboard.shared.TaskEndpoint;
-import de.oose.taskboard.shared.TaskEndpointAsync;
+import de.oose.taskboard.shared.TaskBoundary;
+import de.oose.taskboard.shared.TaskBoundaryAsync;
+import de.oose.taskboard.shared.entity.Task;
 
 public class TaskboardPresenter {
 
-	TaskEndpointAsync service = GWT.create(TaskEndpoint.class);
+	TaskBoundaryAsync service = GWT.create(TaskBoundary.class);
 
 	TaskboardView view;
 

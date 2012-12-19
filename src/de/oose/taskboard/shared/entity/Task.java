@@ -1,8 +1,7 @@
-package de.oose.taskboard.shared;
+package de.oose.taskboard.shared.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,10 +13,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @SuppressWarnings("serial")
 @Entity
 @NamedQueries({
 	@NamedQuery(name = Task.QUERY_ALL, query="SELECT t FROM Task t")})
+@JsonIgnoreProperties(ignoreUnknown=true, value={"version"})
 public class Task implements Serializable {
 	public enum State {
 		TODO, IN_PROGRESS, DONE;

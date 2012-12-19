@@ -10,8 +10,8 @@ import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import de.oose.taskboard.shared.Task;
-import de.oose.taskboard.shared.TaskList;
+import de.oose.taskboard.shared.entity.Task;
+import de.oose.taskboard.shared.entity.TaskList;
 
 @Named
 @Transactional

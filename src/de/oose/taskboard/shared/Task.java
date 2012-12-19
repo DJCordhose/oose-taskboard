@@ -2,12 +2,14 @@ package de.oose.taskboard.shared;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
@@ -31,6 +33,9 @@ public class Task implements Serializable {
 	String description = "";
 	String owner = "";
 	boolean hide = false;
+	
+	@ManyToOne
+	private TaskList list;
 	
 	@Version
 	int version;
@@ -87,6 +92,14 @@ public class Task implements Serializable {
 
 	public void setHide(boolean hide) {
 		this.hide = hide;
+	}
+
+	public TaskList getList() {
+		return list;
+	}
+
+	public void setList(TaskList list) {
+		this.list = list;
 	}
 
 }

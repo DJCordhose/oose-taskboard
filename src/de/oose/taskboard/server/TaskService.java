@@ -1,5 +1,6 @@
 package de.oose.taskboard.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
@@ -10,6 +11,7 @@ import javax.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.oose.taskboard.shared.Task;
+import de.oose.taskboard.shared.TaskList;
 
 @Named
 @Transactional
@@ -38,4 +40,17 @@ public class TaskService {
 		Query query = em.createNamedQuery(Task.QUERY_ALL);
 		return query.getResultList();
 	}
+	
+	public TaskList detach(TaskList taskList) {
+		if (taskList.getTasks() != null) {
+			taskList.setTasks(new ArrayList<Task>(taskList.getTasks()));
+		}
+		return taskList;
+	}
+	
+	public Task detach(Task task) {
+		return task;
+	}
+
+
 }

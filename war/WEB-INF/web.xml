@@ -50,7 +50,7 @@
     <!-- 
     <servlet-class>de.oose.taskboard.server.TaskEndpointImpl</servlet-class>
      -->
-    <servlet-class>de.oose.taskboard.server.TaskEndpointWithSpringServiceImpl</servlet-class>
+    <servlet-class>de.oose.taskboard.server.TaskEndpointSpringImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>

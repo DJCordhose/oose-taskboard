@@ -8,7 +8,7 @@ import de.oose.taskboard.shared.Task;
 import de.oose.taskboard.shared.TaskEndpoint;
 
 @SuppressWarnings("serial")
-public class TaskEndpointWithSpringServiceImpl extends AbstractSpringBoundary
+public class TaskEndpointSpringImpl extends AbstractSpringBoundary
 		implements TaskEndpoint {
 
 	@Inject
